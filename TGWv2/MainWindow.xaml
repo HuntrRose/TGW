@@ -1,0 +1,38 @@
+﻿<Window x:Class="TGWv2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TGWv2"
+        xmlns:vm="clr-namespace:TGWv2.ViewModel"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="300" Width="300" WindowState="Maximized">
+    <Window.CommandBindings>
+        <CommandBinding Command="local:MainWindow.NewGameCommand" CanExecute="CommandBinding_CanExecute" Executed="CommandBinding_Executed"/>
+    </Window.CommandBindings>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition />
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0">
+            <MenuItem Header="_File">
+                <MenuItem x:Name="NewGameMenu" Header="_New Game" Command="local:MainWindow.NewGameCommand"/>
+                <MenuItem Header="Open" />
+                <MenuItem Header="_Save" />
+                <Separator/>
+                <MenuItem x:Name="ExitOption" Header="_Exit" Click="ExitOption_Click" />
+            </MenuItem>
+            <MenuItem Header="_Tools">
+                <MenuItem x:Name="OptionsMenu" Header="_Options" Command="vm:Config.OptionsCommand"/>
+            </MenuItem>
+        </Menu>
+        <ScrollViewer Grid.Row="1"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <Grid Background="Green" x:Name="GameField" HorizontalAlignment="Left" VerticalAlignment="Top">
+            </Grid>
+        </ScrollViewer>
+        <Button x:Name="endTurnButton" Content="End Turn" HorizontalAlignment="Right" Margin="104,0.6,0,0" Grid.Row="2" VerticalAlignment="Top" Width="75" Click="endTurnButton_Click"/>
+
+    </Grid>
+</Window>

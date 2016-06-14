@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="TGWv2.HexTileControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TGWv2"
+             xmlns:vm="clr-namespace:TGWv2.ViewModel"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <vm:TerrainTypeToImageBrushConverter x:Key="TerrainConverter"/>
+        <vm:StateToColorConverter x:Key="StateConverter"/>
+    </UserControl.Resources>
+    <Grid>
+    <Polygon Grid.ZIndex="1"  x:Name="poly" Points="{Binding Points}" Fill="{Binding TerrainType,Converter={StaticResource TerrainConverter}}" StrokeThickness="2" MouseEnter="Polygon_MouseEnter" MouseLeave="poly_MouseLeave">
+            <Polygon.Stroke>
+                
+                <SolidColorBrush Color="{Binding State,Converter={StaticResource StateConverter}}"/>
+            </Polygon.Stroke>
+    </Polygon>
+    </Grid>
+</UserControl>
