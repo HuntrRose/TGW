@@ -9,7 +9,18 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <vm:UnitCenterToMarginConverter x:Key="PositionConverter"/>
+        <vm:UnitMultiConverter x:Key="UnitConverter2"/>
         <vm:UnitImageConverter x:Key="ImageConverter"/>
     </UserControl.Resources>
-    <Image Grid.ZIndex="2"  Margin="{Binding Center,Converter={StaticResource PositionConverter}}" Source="{Binding . ,Converter={StaticResource ImageConverter}}" Width="60" Height="60" VerticalAlignment="Top" HorizontalAlignment="Left" ></Image>
+    <Image Grid.ZIndex="2"  Margin="{Binding Center,Converter={StaticResource PositionConverter}}"  Width="60" Height="60" VerticalAlignment="Top" HorizontalAlignment="Left">
+        <!--Source="{Binding .,Converter={StaticResource ImageConverter}}"-->
+        <Image.Source>
+            
+                <MultiBinding Converter="{StaticResource UnitConverter2}">
+                    <Binding Path="."/>
+                    <Binding Path="IsAlive"/>
+                </MultiBinding>
+            
+        </Image.Source>
+    </Image>
 </UserControl>

@@ -14,9 +14,11 @@ namespace TGWv2.ViewModel
         private static HexBoard _board;
         private static Config _config = Config.Instance;
         private static List<Unit> _units = new List<Unit>();
+        private static List<UnitControl> _unitControls = new List<UnitControl>();
         private static List<List<Overlay>> _overLayTiles = new List<List<Overlay>>();
         private static List<HexField> _potentialMoves = null;
         private static List<HexField> _potentialTargets = new List<HexField>();
+        private static List<Unit> _destroyedUnits = new List<Unit>();
         private static Unit SelectedUnit;
         private static List<Player> _players = new List<Player>();
         private static Player _currentPlayer;
@@ -80,7 +82,11 @@ namespace TGWv2.ViewModel
                 _players = value;
             }
         }
-
+        public static List<UnitControl> UnitControls
+        {
+            get { return _unitControls; }
+            set { _unitControls = value; }
+        }
         internal static void CreateUnits()
         {
             int Upperbound = 3;
@@ -163,6 +169,11 @@ namespace TGWv2.ViewModel
                             _overLayTiles[x][y].Unit = unit;
                             player.Units.Add(unit);
                             usedTiles.Add(selectedTile);
+
+                            UnitControl uc = new UnitControl();
+                            uc.DataContext = unit;
+                            _unitControls.Add(uc);
+
                             placed = true;
                         }
                     }
@@ -271,7 +282,45 @@ namespace TGWv2.ViewModel
                     if ((clickedTile.Unit as Unit).Owner as Player != _currentPlayer)
                     {
                         //Perform attack
-                        throw (new NotImplementedException("To be made"));
+                        int damage = (int)Math.Ceiling((decimal)(SelectedUnit.AttackStrength / (clickedTile.Unit as Unit).DefenceStrengt));
+                        (clickedTile.Unit as Unit).Health = (clickedTile.Unit as Unit).Health - damage;
+                        if ((clickedTile.Unit as Unit).Health <= 0)
+                        {
+                            /*for (int x = 0; x < _unitControls.Count(); x++)
+                            {
+                                /*if ((_unitControls[x].DataContext as Unit) == (clickedTile.Unit as Unit))
+                                {
+                              //      MainWindow.RemoveUnit(_unitControls[x]);
+                                    //_unitControls.Remove(_unitControls[x]);
+                                }
+                            }*/
+
+                            foreach (Player player in _players)
+                            {
+                                if (player != _currentPlayer)
+                                {
+                                    player.Units.Remove((clickedTile.Unit as Unit));
+                                    _destroyedUnits.Add((clickedTile.Unit as Unit));
+                                    (clickedTile.Unit as Unit).IsAlive = false;
+                                    clickedTile.Unit = null;
+                                    clickedTile.IsOccupied = false;
+                                }
+                            }
+
+                        }
+                        _overLayTiles[clickedTile.XCoord][clickedTile.YCoord].State = OverlayStates.normal;
+                        foreach (HexField tile in _potentialMoves)
+                        {
+                            _overLayTiles[tile.XCoord][tile.YCoord].State = OverlayStates.normal;
+                        }
+                        foreach (HexField tile in _potentialTargets)
+                        {
+                            _overLayTiles[tile.XCoord][tile.YCoord].State = OverlayStates.normal;
+                        }
+                        _potentialTargets.Clear();
+                        _potentialMoves.Clear();
+                        SelectedUnit = null;
+
                     }
                     else if (SelectedUnit == clickedTile.Unit as Unit)
                     {

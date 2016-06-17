@@ -24,9 +24,16 @@ namespace TGWv2
     {
 
         private Config _config = Config.Instance;
+        public static Grid GameField;
         public MainWindow()
         {
             InitializeComponent();
+            GameField = new Grid();
+            GameField.HorizontalAlignment = HorizontalAlignment.Left;
+            GameField.VerticalAlignment = VerticalAlignment.Top;
+            //GameField.Background;
+            GameScrollView.Content = GameField;
+            
         }
 
         public static RoutedCommand NewGameCommand = new RoutedCommand("New Game", typeof(NewGame),new InputGestureCollection(new List<InputGesture> { new KeyGesture(Key.N, ModifierKeys.Control) }));
@@ -110,6 +117,16 @@ namespace TGWv2
         private void endTurnButton_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.ViewModel.endTurn();
+        }
+
+        public static void RemoveUnit(UnitControl uc)
+        {
+            uc.Visibility = Visibility.Hidden;
+            GameField.Children.Remove(uc);
+            uc.Content = null;
+            uc.DataContext = null;
+            uc.Opacity = 1;
+            uc = null;
         }
     }
 }

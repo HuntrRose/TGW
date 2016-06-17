@@ -78,6 +78,7 @@
     <Compile Include="ViewModel\TerrainTypeToImageBrushConverter.cs" />
     <Compile Include="ViewModel\UnitCenterToMarginConverter.cs" />
     <Compile Include="ViewModel\UnitImageConverter.cs" />
+    <Compile Include="ViewModel\UnitMultiConverter.cs" />
     <Compile Include="ViewModel\ViewModel.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
