@@ -251,6 +251,8 @@ namespace TGWv2.ViewModel
                             }
 
                         }
+
+ 
                         foreach(HexField hex in tmp)
                         {
                             _potentialMoves.Remove(hex);
